@@ -35,24 +35,27 @@ overrideid = os.environ['NZBPO_OVERRIDEID'];
 
 # Detecting users Owner[UID] and Group[GID], executed from settings page
 if detect_mode:
-    if pwd.getpwuid(os.getuid())[2] is not None:
-        print("User UID is detected:",[pwd.getpwuid(os.getuid())[2]],)
-    else:
-        print("Cannot detect logged in users UID")
-        check = SCRIPT_ERROR
-
-    if pwd.getpwuid(os.getuid())[3] is not None:
-        print("Group GID is detected:",[pwd.getpwuid(os.getuid())[3]],)
-    else:
-        print("Cannot detect logged in users GID")
-        check = SCRIPT_ERROR
-
     try:
-        check
-    except NameError: 
-        sys.exit(SCRIPT_SUCCESS)
-    else:
-        sys.exit(check)
+        if pwd.getpwuid(os.getuid())[2] is not None:
+            print("User UID is detected:",[pwd.getpwuid(os.getuid())[2]],)
+        else:
+            print("Cannot detect logged in users UID")
+            check = SCRIPT_ERROR
+
+        if pwd.getpwuid(os.getuid())[3] is not None:
+            print("Group GID is detected:",[pwd.getpwuid(os.getuid())[3]],)
+        else:
+            print("Cannot detect logged in users GID")
+            check = SCRIPT_ERROR
+
+        try:
+            check
+        except NameError: 
+            sys.exit(SCRIPT_SUCCESS)
+        else:
+            sys.exit(check)
+    except KeyError:
+        print("The requested key was not found.")
 
 # Counters for added Categories
 countcategory = 1
