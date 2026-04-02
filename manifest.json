@@ -1,30 +1,44 @@
 {
     "main": "main.py",
     "name": "AccessOwnership",
-    "homepage": "https://github.com/nzbgetcom/Extension-AccessOwnership",
+    "homepage": "https://github.com/Lennong/Extension-AccessOwnership",
     "kind": "POST-PROCESSING",
     "displayName": "AccessOwnership",
-    "version": "1.4",
+    "version": "1.6",
     "nzbgetMinVersion": "24",
     "author": "Lennong",
     "license": "GNU",
-    "about": "Sets access permissions & ownership to downloaded files.",
+    "about": "Sets access permissions & ownership to downloaded files",
     "queueEvents": "",
     "requirements": [
         "This extension is compatible with NZBGet v24+.",
-        "This extension requires Python3.8 and up to be installed on your system."
+        "This extension requires Python3.8 and up to be installed on your system.",
+        "This extension is supported on [Linux, MacOS, Docker].",
+        "",
+        "START INITIAL CONFIGURATION OF THIS EXTENSION BY SAVE AND RELOAD ONE TIME!"
     ],
     "description": [
         "This script modifies access permissions & ownership on downloaded files."
     ],
     "options": [
         {
+            "name": "OverrideID",
+            "displayName": "Override UID and GID",
+            "value": "no",
+            "description": [
+                "To override UID or GID check and allow non-system present UID and GID to be set on downloaded files",
+                "",
+                "NOTE: WARNING! Only use this if you know what you are doing!"
+            ],
+            "select": ["no", "yes"]
+        },
+        {
             "name": "DestDir",
             "displayName": "DestDir",
-            "value": "",
+            "value": "${DestDir}",
             "description": [
                 "Destination directory for downloads.",
-                "Set the same 'DestDir' value as set under the 'PATHS' settings.",
+                "Keep as is or manually set the same 'DestDir' value as set under the 'PATHS' settings.",
                 "",
                 "NOTE: Enable this extension in the 'Extensions' setting under 'EXTENSION SCRIPTS' after this extension is configured and saved."
             ],
@@ -44,22 +58,24 @@
         {
             "name": "Owner",
             "displayName": "Owner",
-            "value": 1000,
+            "value": "",
             "description": [
-                "Sets Owner (uid) to downloaded files. Use positive integers only, starting with '0' and up.",
+                "Sets Owner [UID] to downloaded files. Use positive integers only, starting with '0' and up.",
                 "",
-                "Default = '1000'."
+                "NOTE: Use 'Detect UID and GID' function to detect UID for user that runs this instance of NZBGet.",
+                "NOTE: If use other UID, only use UID present in system or set UID will not be applied on downloaded files."
             ],
             "select": ["UID"]
         },
         {
             "name": "Group",
             "displayName": "Group",
-            "value": 1000,
+            "value": "",
             "description": [
-                "Set Group (gid) to downloaded files. Use positive integers only, starting with '0' and up.",
+                "Set Group [GID] to downloaded files. Use positive integers only, starting with '0' and up.",
                 "",
-                "Default = '1000'."
+                "NOTE: Use 'Detect UID and GID' function to detect GID for user that runs this instance of NZBGet.",
+                "NOTE: If use other GID, only use GID present in system or set GID will not be applied on downloaded files."
             ],
             "select": ["GID"]
         },
@@ -102,11 +118,12 @@
             "section": "Categories",
             "name": "Owner",
             "displayName": "Owner",
-            "value": 1000,
+            "value": "",
             "description": [
-                "Sets Owner (uid) to downloaded files in this category. Use positive integers only, starting with '0' and up.",
+                "Sets Owner [UID] to downloaded files in this category. Use positive integers only, starting with '0' and up.",
                 "",
-                "Default = '1000'."
+                "NOTE: Use 'Detect UID and GID' function to detect UID for user that runs this instance of NZBGet.",
+                "NOTE: If use other UID, only use UID present in system or set UID will not be applied on downloaded files."
             ],
             "select": ["UID"]
         },
@@ -114,25 +131,38 @@
             "section": "Categories",
             "name": "Group",
             "displayName": "Group",
-            "value": 1000,
+            "value": "",
             "description": [
-                "Sets Group (gid) to downloaded files in this category. Use positive integers only, starting with '0' and up.",
+                "Sets Group [GID] to downloaded files in this category. Use positive integers only, starting with '0' and up.",
                 "",
-                "Default = '1000'."
+                "NOTE: Use 'Detect UID and GID' function to detect GID for user that runs this instance of NZBGet.",
+                "NOTE: If use other GID, only use GID present in system or set GID will not be applied on downloaded files."
             ],
             "select": ["GID"]
         }
     ],
     "commands": [
         {
+            "name": "Detect",
+            "action": "Detect now",
+            "displayName": "Detect UID and GID",
+            "description": [
+                "Detects users Owner[UID] and Group[GID]",
+                "",
+                "NOTE: Use this tool to detect Detects UID and GID for settings:",
+                "OWNER:      detects UID for user that runs this instance of NZBGet",
+                "GROUP:      detects GID for user that runs this instance of NZBGet"
+            ]
+        },
+        {
             "name": "Test",
-            "action": "Check now",
-            "displayName": "Test",
+            "action": "Test now",
+            "displayName": "Test Settings",
             "description": [
                 "Click to test the settings:",
                 "",
-                "CATEGORIES: extension coorelates with main program",
-                "PATHS:      extension coorelates with main program",
+                "CATEGORIES: extension coorelates with main settings",
+                "PATHS:      extension coorelates with main settings",
                 "ACCESS:     extension checks validity of mask input",
                 "OWNER:      extension checks validity of UID input and present UID in system",
                 "GROUP:      extension checks validity of GID input and present GID in system"
